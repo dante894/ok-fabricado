@@ -200,5 +200,5 @@ Por definir (por ejemplo, MIT si quieres que otros puedan reutilizarlo).
 
 ## Autor
 
-**[Tu nombre]**, proyecto desarrollado para aprender y aplicar Java, Spring Boot y Spring Security.
-[LinkedIn](https://www.linkedin.com/in/tu-perfil) · [GitHub](https://github.com/tu-usuario)
+**Dante Trabalon**, proyecto desarrollado para aprender y aplicar Java, Spring Boot y Spring Security.
+[LinkedIn](https://www.linkedin.com/in/dante-tbn-11055a241/) · [GitHub](https://github.com/dante894/ok-fabricado)
