@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Resultado')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="centro">
+    <img class="logo medio" th:src="@{/img/logo.png}" alt="OK Fabricado">
+    <!-- verificacion es un record: se accede con metodos (resultado(), codigoFabrica()...) -->
+    <div class="resultado" th:classappend="${verificacion.resultado().claseCss}" aria-live="polite">
+        <div class="sello" th:text="${verificacion.resultado().emoji}">👌</div>
+        <h1 th:text="${verificacion.resultado().titulo}">Auténtico</h1>
+        <p th:text="${verificacion.resultado().mensaje}">Mensaje</p>
+
+        <p th:if="${verificacion.resultado().name() == 'YA_VERIFICADO' and verificacion.fechaVerificacion() != null}">
+            Primera verificación:
+            <strong th:text="${#temporals.format(verificacion.fechaVerificacion(), 'dd/MM/yyyy HH:mm')}">fecha</strong>
+        </p>
+
+        <dl class="datos" th:if="${verificacion.mostrarDatos()}">
+            <div><dt>Código de fábrica</dt><dd class="mono" th:text="${verificacion.codigoFabrica()}">BR-2026-000001</dd></div>
+            <div><dt>Modelo</dt><dd th:text="${verificacion.modelo()}">Bolso</dd></div>
+            <div><dt>Vendido en</dt><dd th:text="${verificacion.tienda()}">Tienda</dd></div>
+            <div><dt>Fecha de venta</dt><dd th:text="${#temporals.format(verificacion.fechaVenta(), 'dd/MM/yyyy HH:mm')}">fecha</dd></div>
+        </dl>
+    </div>
+</main>
+</body>
+</html>

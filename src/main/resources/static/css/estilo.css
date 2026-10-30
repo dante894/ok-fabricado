@@ -1,0 +1,47 @@
+:root{--bg:#EEF0EA;--surface:#fff;--ink:#1B1F1D;--muted:#5B6560;--line:#D5D9D0;--brand:#12365A;--brand-ink:#fff;
+--ok:#1F7A45;--ok-bg:#E2F1E7;--warn:#8A5A00;--warn-bg:#FBEFD2;--bad:#B3261E;--bad-bg:#F9E1DE}
+@media (prefers-color-scheme:dark){:root{--bg:#101613;--surface:#18201C;--ink:#E8ECE6;--muted:#9AA69F;--line:#2B3630;
+--brand:#6DB5E3;--brand-ink:#08141F;--ok:#6FD39B;--ok-bg:#16301F;--warn:#E8B85A;--warn-bg:#33270D;--bad:#F08A80;--bad-bg:#3A1A17}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:960px;margin:0 auto;padding:22px 16px 60px}
+h1{font-size:1.6rem;margin:0 0 4px;text-wrap:balance} h2{font-size:1.2rem;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 16px}
+.menu{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 18px;background:var(--surface);border-bottom:1px solid var(--line)}
+.menu a{color:var(--ink);text-decoration:none;font-weight:500}
+.menu .marca{display:flex;align-items:center;gap:10px;color:var(--brand);font-weight:700;font-size:1.05rem}
+.logo-menu{width:38px;height:38px;display:block}
+.logo{display:block;margin:0 auto 14px;height:auto}
+.logo.medio{width:96px}
+.logo.grande{width:170px;margin-bottom:18px}
+.grow{flex:1}
+.inline{display:inline;margin:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:18px}
+.fila{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+label{display:flex;flex-direction:column;gap:4px;font-size:.88rem;color:var(--muted);flex:1;min-width:160px}
+input,select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px 12px;width:100%}
+.btn{display:inline-block;font:inherit;font-weight:500;border:0;border-radius:9px;padding:10px 16px;cursor:pointer;background:var(--brand);color:var(--brand-ink);text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn.small{padding:6px 10px;font-size:.85rem}
+.btn.grande{font-size:1.1rem;padding:14px 26px}
+.aviso{border-radius:10px;padding:10px 14px;margin-bottom:14px}
+.aviso.exito{background:var(--ok-bg);color:var(--ok)} .aviso.error{background:var(--bad-bg);color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--muted);font-weight:500;font-size:.82rem}
+.tabla-scroll{overflow-x:auto}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem}
+.qr-mini{width:64px;height:64px;background:#fff;border-radius:6px;border:1px solid var(--line)}
+.pill{display:inline-block;font-size:.78rem;padding:2px 9px;border-radius:99px;font-weight:500}
+.pill.fabricado{background:var(--line)} .pill.enviado{background:var(--warn-bg);color:var(--warn)} .pill.vendido{background:var(--ok-bg);color:var(--ok)}
+.centro{text-align:center;max-width:560px}
+.resultado{border-radius:16px;padding:30px 20px;border:1px solid transparent;margin-top:10px}
+.resultado.ok{background:var(--ok-bg);border-color:var(--ok)} .resultado.warn{background:var(--warn-bg);border-color:var(--warn)} .resultado.bad{background:var(--bad-bg);border-color:var(--bad)}
+.sello{font-size:5.5rem;line-height:1}
+.resultado.ok .sello{animation:pop .7s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes pop{0%{transform:scale(.2) rotate(-25deg);opacity:0}70%{transform:scale(1.15) rotate(6deg);opacity:1}100%{transform:scale(1) rotate(0)}}
+@media (prefers-reduced-motion:reduce){.resultado.ok .sello{animation:none}}
+.datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:18px 0 0;text-align:left}
+.datos div{background:var(--surface);border-radius:10px;padding:10px 12px}
+.datos dt{color:var(--muted);font-size:.78rem} .datos dd{margin:0}
+tr.bad td:first-child{border-left:4px solid var(--bad)} tr.warn td:first-child{border-left:4px solid var(--warn)} tr.ok td:first-child{border-left:4px solid var(--ok)}

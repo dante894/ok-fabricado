@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragmentos :: cabecera('Panel')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Hola, <span sec:authentication="name">usuario</span></h1>
+    <p class="sub">Elige qué quieres hacer.</p>
+    <div class="panel" sec:authorize="hasAnyRole('FABRICA','ADMIN')">
+        <h2>Fábrica</h2>
+        <p>Genera lotes de productos con su código y su QR, y márcalos como enviados a tienda.</p>
+        <a class="btn" th:href="@{/fabrica}">Ir a fábrica</a>
+    </div>
+    <div class="panel" sec:authorize="hasRole('TIENDA')">
+        <h2>Caja</h2>
+        <p>Registra la venta de un producto con su código de fábrica.</p>
+        <a class="btn" th:href="@{/caja}">Ir a caja</a>
+    </div>
+    <div class="panel" sec:authorize="hasAnyRole('FABRICA','ADMIN')">
+        <h2>Alertas</h2>
+        <p>Historial de verificaciones: repetidas, de productos no vendidos o de códigos inexistentes.</p>
+        <a class="btn ghost" th:href="@{/alertas}">Ver alertas</a>
+    </div>
+    <div class="panel" sec:authorize="hasRole('ADMIN')">
+        <h2>Administración</h2>
+        <p>Gestiona los modelos de producto, las tiendas y los usuarios del sistema.</p>
+        <a class="btn" th:href="@{/admin/modelos}">Modelos</a>
+        <a class="btn" th:href="@{/admin/tiendas}">Tiendas</a>
+        <a class="btn" th:href="@{/admin/usuarios}">Usuarios</a>
+    </div>
+</main>
+</body>
+</html>

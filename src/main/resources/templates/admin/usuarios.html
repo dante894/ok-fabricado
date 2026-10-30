@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Usuarios')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Usuarios</h1>
+    <p class="sub">Personal de fábrica, cajeros de tienda y administradores. Los clientes no necesitan usuario.</p>
+    <div th:replace="~{fragmentos :: mensajes}"></div>
+
+    <form class="panel" th:action="@{/admin/usuarios}" method="post">
+        <h2>Nuevo usuario</h2>
+        <div class="fila">
+            <label>Nombre <input name="nombre" maxlength="100" required></label>
+            <label>Email <input type="email" name="email" maxlength="150" required></label>
+            <label>Contraseña (mín. 6) <input type="password" name="clave" minlength="6" required autocomplete="new-password"></label>
+        </div>
+        <div class="fila" style="margin-top:10px">
+            <label>Rol
+                <select name="rol" required>
+                    <option th:each="r : ${roles}" th:value="${r}" th:text="${r}">ADMIN</option>
+                </select>
+            </label>
+            <label>Tienda (solo para rol TIENDA)
+                <select name="idTienda">
+                    <option value="">— ninguna —</option>
+                    <option th:each="t : ${tiendas}" th:value="${t.id}" th:text="${t.nombre}">Tienda</option>
+                </select>
+            </label>
+            <button class="btn" type="submit">Crear usuario</button>
+        </div>
+    </form>
+
+    <div class="panel">
+        <h2>Usuarios existentes</h2>
+        <div class="tabla-scroll">
+            <table>
+                <thead><tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Tienda</th><th>Nueva contraseña</th><th></th></tr></thead>
+                <tbody>
+                <tr th:each="u : ${usuarios}">
+                    <td th:text="${u.nombre}">Nombre</td>
+                    <td class="mono" th:text="${u.email}">email</td>
+                    <td th:text="${u.rol}">ADMIN</td>
+                    <td th:text="${u.tienda != null} ? ${u.tienda.nombre} : '-'">-</td>
+                    <td>
+                        <form th:action="@{/admin/usuarios/{id}/clave(id=${u.id})}" method="post" class="fila">
+                            <input type="password" name="clave" minlength="6" required autocomplete="new-password" style="max-width:150px">
+                            <button class="btn ghost small" type="submit">Cambiar</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/usuarios/{id}/eliminar(id=${u.id})}" method="post" class="inline"
+                              onsubmit="return confirm('¿Eliminar este usuario?')">
+                            <button class="btn ghost small" type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Inicio')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="centro">
+    <img class="logo grande" th:src="@{/img/logo.png}" alt="OK Fabricado: verificación de autenticidad">
+    <h1>Verifica la autenticidad de tu producto</h1>
+    <p class="sub">Escanea el código QR que viene dentro de tu bolso, cartera o botas con la cámara de tu celular.
+        La verificación solo se puede hacer una vez.</p>
+    <div class="panel">
+        <p>¿Eres personal de la marca o de una tienda?</p>
+        <a class="btn" th:href="@{/login}">Iniciar sesión</a>
+    </div>
+</main>
+</body>
+</html>

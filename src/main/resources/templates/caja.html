@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Caja')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Caja</h1>
+    <p class="sub" th:if="${tienda != null}">Tienda: <strong th:text="${tienda.nombre}">Tienda Centro</strong></p>
+    <div th:replace="~{fragmentos :: mensajes}"></div>
+
+    <div class="aviso error" th:if="${tienda == null}">Tu usuario no tiene una tienda asignada. Pide a un administrador que la configure.</div>
+
+    <form class="panel" th:if="${tienda != null}" th:action="@{/caja/vender}" method="post">
+        <h2>Registrar venta</h2>
+        <p class="sub">Escribe o escanea el código de fábrica de la etiqueta (ej: BR-2026-000001).</p>
+        <div class="fila">
+            <label>Código de fábrica <input class="mono" name="codigo" autocomplete="off" autofocus required></label>
+            <button class="btn" type="submit">Cobrar y marcar vendido</button>
+        </div>
+    </form>
+
+    <div class="panel" th:if="${ventas != null and !#lists.isEmpty(ventas)}">
+        <h2>Últimas ventas</h2>
+        <div class="tabla-scroll">
+            <table>
+                <thead><tr><th>Código</th><th>Modelo</th><th>Fecha</th></tr></thead>
+                <tbody>
+                <tr th:each="v : ${ventas}">
+                    <td class="mono" th:text="${v.codigoFabrica}">BR-2026-000001</td>
+                    <td th:text="${v.modelo.nombre}">Bolso</td>
+                    <td th:text="${#temporals.format(v.fechaVenta, 'dd/MM/yyyy HH:mm')}">fecha</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

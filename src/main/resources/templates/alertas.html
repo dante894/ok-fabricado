@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Alertas')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Alertas y escaneos</h1>
+    <p class="sub">Últimos 200 intentos de verificación. Lo rojo y amarillo merece atención: códigos falsos, repetidos o de productos no vendidos.</p>
+    <div class="panel">
+        <p class="sub" th:if="${#lists.isEmpty(escaneos)}">Sin escaneos todavía.</p>
+        <div class="tabla-scroll" th:unless="${#lists.isEmpty(escaneos)}">
+            <table>
+                <thead><tr><th>Resultado</th><th>Fecha</th><th>Código de fábrica</th><th>Token</th><th>IP</th></tr></thead>
+                <tbody>
+                <tr th:each="e : ${escaneos}" th:class="${e.resultado.claseCss}">
+                    <td><span th:text="${e.resultado.emoji} + ' ' + ${e.resultado.titulo}">👌 Auténtico</span></td>
+                    <td th:text="${#temporals.format(e.fecha, 'dd/MM/yyyy HH:mm:ss')}">fecha</td>
+                    <td class="mono" th:text="${e.codigoFabrica} ?: '-'">-</td>
+                    <td class="mono" th:text="${e.tokenParcial}">token</td>
+                    <td class="mono" th:text="${e.ip}">127.0.0.1</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

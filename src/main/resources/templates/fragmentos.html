@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- Fragmentos reutilizables: cada pagina los incluye con th:replace (como head.html y nav.html en biblioteca) -->
+<head th:fragment="cabecera(titulo)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · OK Fabricado'">OK Fabricado</title>
+    <link rel="icon" type="image/png" th:href="@{/img/favicon.png}">
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+<nav th:fragment="menu" class="menu">
+    <a class="marca" th:href="@{/}"><img class="logo-menu" th:src="@{/img/logo.png}" alt=""><span>OK Fabricado</span></a>
+    <span class="grow"></span>
+    <th:block sec:authorize="isAuthenticated()">
+        <a th:href="@{/panel}">Panel</a>
+        <a sec:authorize="hasAnyRole('FABRICA','ADMIN')" th:href="@{/fabrica}">Fábrica</a>
+        <a sec:authorize="hasRole('TIENDA')" th:href="@{/caja}">Caja</a>
+        <a sec:authorize="hasAnyRole('FABRICA','ADMIN')" th:href="@{/alertas}">Alertas</a>
+        <th:block sec:authorize="hasRole('ADMIN')">
+            <a th:href="@{/admin/modelos}">Modelos</a>
+            <a th:href="@{/admin/tiendas}">Tiendas</a>
+            <a th:href="@{/admin/usuarios}">Usuarios</a>
+        </th:block>
+        <form th:action="@{/logout}" method="post" class="inline">
+            <button class="btn ghost small" type="submit">Salir</button>
+        </form>
+    </th:block>
+    <a sec:authorize="!isAuthenticated()" th:href="@{/login}">Ingresar</a>
+</nav>
+<div th:fragment="mensajes">
+    <div class="aviso exito" th:if="${exito}" th:text="${exito}"></div>
+    <div class="aviso error" th:if="${error}" th:text="${error}"></div>
+</div>
+</body>
+</html>

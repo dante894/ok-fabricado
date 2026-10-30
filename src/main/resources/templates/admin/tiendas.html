@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Tiendas')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Tiendas</h1>
+    <p class="sub">Tiendas oficiales donde se venden los productos.</p>
+    <div th:replace="~{fragmentos :: mensajes}"></div>
+
+    <form class="panel" th:action="@{/admin/tiendas}" method="post">
+        <h2>Nueva tienda</h2>
+        <div class="fila">
+            <label>Nombre <input name="nombre" maxlength="100" required placeholder="Ej: Tienda Centro"></label>
+            <label>Ciudad <input name="ciudad" maxlength="100" placeholder="Ej: Bogotá"></label>
+            <button class="btn" type="submit">Crear tienda</button>
+        </div>
+    </form>
+
+    <div class="panel">
+        <h2>Tiendas existentes</h2>
+        <p class="sub" th:if="${#lists.isEmpty(tiendas)}">Todavía no hay tiendas.</p>
+        <div class="tabla-scroll" th:unless="${#lists.isEmpty(tiendas)}">
+            <table>
+                <thead><tr><th>Nombre y ciudad</th><th></th></tr></thead>
+                <tbody>
+                <tr th:each="t : ${tiendas}">
+                    <td>
+                        <form th:action="@{/admin/tiendas/{id}/editar(id=${t.id})}" method="post" class="fila">
+                            <input name="nombre" th:value="${t.nombre}" maxlength="100" required style="max-width:240px">
+                            <input name="ciudad" th:value="${t.ciudad}" maxlength="100" style="max-width:200px">
+                            <button class="btn ghost small" type="submit">Guardar</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/tiendas/{id}/eliminar(id=${t.id})}" method="post" class="inline"
+                              onsubmit="return confirm('¿Eliminar esta tienda?')">
+                            <button class="btn ghost small" type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

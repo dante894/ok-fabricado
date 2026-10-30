@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Fábrica')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Fábrica</h1>
+    <p class="sub">Cada unidad recibe un código de fábrica y un QR con un token aleatorio.</p>
+    <div th:replace="~{fragmentos :: mensajes}"></div>
+
+    <form class="panel" th:action="@{/fabrica/lote}" method="post">
+        <h2>Generar lote</h2>
+        <div class="fila">
+            <label>Modelo
+                <select name="idModelo" required>
+                    <option th:each="m : ${modelos}" th:value="${m.id}" th:text="${m.nombre}">Bolso</option>
+                </select>
+            </label>
+            <label style="max-width:140px">Cantidad
+                <input type="number" name="cantidad" min="1" max="500" value="3" required>
+            </label>
+            <button class="btn" type="submit">Generar códigos</button>
+        </div>
+    </form>
+
+    <!-- Aparece solo justo despues de generar un lote: sus etiquetas se imprimen desde aqui -->
+    <form class="panel" th:if="${idsNuevos != null and !#lists.isEmpty(idsNuevos)}"
+          th:action="@{/fabrica/etiquetas}" method="post" target="_blank">
+        <h2>Lote recién creado (<span th:text="${#lists.size(idsNuevos)}">3</span> productos)</h2>
+        <p class="sub">Descarga las etiquetas para imprimir en hojas A4 (27 por hoja).</p>
+        <input type="hidden" name="ids" th:each="id : ${idsNuevos}" th:value="${id}">
+        <div class="fila">
+            <button class="btn" type="submit" name="tipo" value="qr">Etiquetas con QR</button>
+            <button class="btn ghost" type="submit" name="tipo" value="codigo">Etiquetas con código de barras</button>
+        </div>
+        <p class="sub" style="margin:10px 0 0">
+            <strong>QR:</strong> va oculto dentro del producto (bajo una etiqueta sellada).
+            <strong>Código de barras:</strong> va visible, para que la caja lo lea.
+        </p>
+    </form>
+
+    <div class="panel">
+        <h2>Últimos productos</h2>
+        <p class="sub" th:if="${#lists.isEmpty(productos)}">Todavía no hay productos. Genera el primer lote arriba.</p>
+        <!-- Formulario aparte: no se puede anidar un form dentro de otro (cada fila ya tiene su boton "Enviar").
+             Las casillas se conectan a este formulario con el atributo form="form-etiquetas". -->
+        <form id="form-etiquetas" th:action="@{/fabrica/etiquetas}" method="post" target="_blank"
+              th:unless="${#lists.isEmpty(productos)}" class="fila" style="margin-bottom:12px">
+            <label style="flex-direction:row;align-items:center;gap:8px;flex:none;min-width:0">
+                <input type="checkbox" id="todos" style="width:auto"> Seleccionar todos
+            </label>
+            <button class="btn ghost small" type="submit" name="tipo" value="qr">Etiquetas con QR de los marcados</button>
+            <button class="btn ghost small" type="submit" name="tipo" value="codigo">Etiquetas con código de barras de los marcados</button>
+        </form>
+        <div class="tabla-scroll" th:unless="${#lists.isEmpty(productos)}">
+            <table>
+                <thead><tr><th></th><th>QR</th><th>Código</th><th>Modelo</th><th>Estado</th><th>Verificado</th><th></th></tr></thead>
+                <tbody>
+                <tr th:each="p : ${productos}">
+                    <td><input type="checkbox" name="ids" th:value="${p.id}" form="form-etiquetas"
+                               style="width:auto" aria-label="Marcar para imprimir etiqueta"></td>
+                    <td><a th:href="@{/qr/{t}(t=${p.token})}" target="_blank">
+                        <img class="qr-mini" th:src="@{/qr/{t}(t=${p.token})}" alt="QR"></a></td>
+                    <td class="mono" th:text="${p.codigoFabrica}">BR-2026-000001</td>
+                    <td th:text="${p.modelo.nombre}">Bolso</td>
+                    <td><span th:class="'pill ' + ${p.estado.name().toLowerCase()}" th:text="${p.estado}">FABRICADO</span></td>
+                    <td th:text="${p.verificado} ? 'Sí' : 'No'">No</td>
+                    <td>
+                        <form th:if="${p.estado.name() == 'FABRICADO'}" th:action="@{/fabrica/enviar/{id}(id=${p.id})}" method="post" class="inline">
+                            <button class="btn ghost small" type="submit">Enviar a tienda</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+<script>
+    // "Seleccionar todos" y aviso si se intenta imprimir sin marcar nada
+    (function () {
+        var todos = document.getElementById('todos');
+        var form = document.getElementById('form-etiquetas');
+        if (!todos || !form) { return; }
+        todos.addEventListener('change', function () {
+            document.querySelectorAll('input[name=ids][form=form-etiquetas]').forEach(function (c) {
+                c.checked = todos.checked;
+            });
+        });
+        form.addEventListener('submit', function (e) {
+            if (!document.querySelector('input[name=ids][form=form-etiquetas]:checked')) {
+                e.preventDefault();
+                alert('Marca al menos un producto.');
+            }
+        });
+    })();
+</script>
+</body>
+</html>

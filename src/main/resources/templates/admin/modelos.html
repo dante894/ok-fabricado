@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Modelos')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main>
+    <h1>Modelos</h1>
+    <p class="sub">Tipos de producto que la fábrica puede producir (bolsos, carteras, botas...).</p>
+    <div th:replace="~{fragmentos :: mensajes}"></div>
+
+    <form class="panel" th:action="@{/admin/modelos}" method="post">
+        <h2>Nuevo modelo</h2>
+        <div class="fila">
+            <label>Nombre <input name="nombre" maxlength="100" required placeholder="Ej: Bolso Aurora"></label>
+            <button class="btn" type="submit">Crear modelo</button>
+        </div>
+    </form>
+
+    <div class="panel">
+        <h2>Modelos existentes</h2>
+        <p class="sub" th:if="${#lists.isEmpty(modelos)}">Todavía no hay modelos.</p>
+        <div class="tabla-scroll" th:unless="${#lists.isEmpty(modelos)}">
+            <table>
+                <thead><tr><th>Nombre</th><th></th></tr></thead>
+                <tbody>
+                <tr th:each="m : ${modelos}">
+                    <td>
+                        <form th:action="@{/admin/modelos/{id}/editar(id=${m.id})}" method="post" class="fila">
+                            <input name="nombre" th:value="${m.nombre}" maxlength="100" required style="max-width:280px">
+                            <button class="btn ghost small" type="submit">Guardar</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/modelos/{id}/eliminar(id=${m.id})}" method="post" class="inline"
+                              onsubmit="return confirm('¿Eliminar este modelo?')">
+                            <button class="btn ghost small" type="submit">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+</body>
+</html>

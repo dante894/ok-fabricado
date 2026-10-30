@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragmentos :: cabecera('Verificar producto')}"></head>
+<body>
+<nav th:replace="~{fragmentos :: menu}"></nav>
+<main class="centro">
+    <img class="logo medio" th:src="@{/img/logo.png}" alt="OK Fabricado">
+    <h1>Verificar producto</h1>
+    <p class="sub">Esta verificación solo se puede hacer <strong>una vez</strong>. Hazla cuando tengas el producto en tus manos.</p>
+    <!-- th:action agrega solo el token CSRF que exige Spring Security en los POST -->
+    <form class="panel" th:action="@{/v/{t}(t=${token})}" method="post">
+        <button class="btn grande" type="submit">Verificar autenticidad</button>
+    </form>
+</main>
+</body>
+</html>
