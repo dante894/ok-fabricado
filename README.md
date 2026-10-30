@@ -196,7 +196,7 @@ QR están pensadas para ir ocultas dentro del producto, y la segunda etapa propo
 
 ## Licencia
 
-Por definir (por ejemplo, MIT si quieres que otros puedan reutilizarlo).
+Por definir 
 
 ## Autor
 
